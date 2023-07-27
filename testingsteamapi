@@ -1,0 +1,28 @@
+import requests
+
+def get_user_subscribed_workshop_items(api_key, steam_id):
+    url = f"https://api.steampowered.com/ISteamRemoteStorage/GetUserSubscribedFiles/v1/?key={api_key}&steamid={steam_id}"
+    response = requests.get(url)
+    url = f"https://api.steampowered.com/ISteamRemoteStorage/GetUserSubscribedFiles/v1/?key=3F80D9AC76557620DF16B7A0F3D5ABAD&steamid=mrparagonthepie"
+
+    if response.status_code == 200:
+        data = response.json()
+        workshop_items = data["response"]["publishedfiledetails"]
+        return workshop_items
+    else:
+        print("Error: Unable to fetch subscribed workshop items.")
+        return None
+
+if __name__ == "__main__":
+    # Replace with your own Steam API key and Steam ID
+    api_key = "3F80D9AC76557620DF16B7A0F3D5ABAD"
+    steam_id = "mrparagonthepie"
+
+    subscribed_workshop_items = get_user_subscribed_workshop_items(api_key, steam_id)
+
+    if subscribed_workshop_items:
+        print("Subscribed Workshop Items:")
+        for item in subscribed_workshop_items:
+            print(f"Title: {item['title']}, ID: {item['publishedfileid']}")
+    else:
+        print("No subscribed workshop items found.")
